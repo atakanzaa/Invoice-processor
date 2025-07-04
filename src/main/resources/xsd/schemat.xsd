@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://crd.gov.pl/wzor/2023/06/29/12648/"
+            xmlns:tns="http://crd.gov.pl/wzor/2023/06/29/12648/"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+
+    <!-- Root elements: Faktura and Invoice -->
+    <xsd:element name="Faktura" type="tns:FakturaComplexType"/>
+    <xsd:element name="Invoice" type="tns:InvoiceComplexType"/>
+
+    <!-- Faktura complex type (Polish VAT invoice) -->
+    <xsd:complexType name="FakturaComplexType">
+        <xsd:sequence>
+            <xsd:element name="Naglowek" type="tns:TNaglowek"/>
+            <xsd:element name="Podmiot1">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="DaneIdentyfikacyjne" type="tns:TPodmiot1"/>
+                        <xsd:element name="Adres" type="tns:TAdres"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="Podmiot2">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="DaneIdentyfikacyjne" type="tns:TPodmiot2"/>
+                        <xsd:element name="Adres" type="tns:TAdres" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="Fa">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="KodWaluty" type="tns:TKodWaluty"/>
+                        <xsd:element name="P_1" type="tns:TDataT"/>
+                        <xsd:element name="P_2" type="tns:TZnakowy"/>
+                        <xsd:element name="P_13_1" type="tns:TKwotowy" minOccurs="0"/>
+                        <xsd:element name="P_14_1" type="tns:TKwotowy" minOccurs="0"/>
+                        <xsd:element name="P_15" type="tns:TKwotowy"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- Invoice complex type (simplified structure) -->
+    <xsd:complexType name="InvoiceComplexType">
+        <xsd:sequence>
+            <xsd:element name="InvoiceNumber" type="tns:TZnakowy"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- Complex Types -->
+    <xsd:complexType name="TNaglowek">
+        <xsd:sequence>
+            <xsd:element name="KodFormularza" type="tns:TKodFormularza"/>
+            <xsd:element name="WariantFormularza" type="tns:TZnakowy"/>
+            <xsd:element name="DataWytworzeniaFa" type="xsd:dateTime"/>
+            <xsd:element name="SystemInfo" type="tns:TZnakowy"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="TPodmiot1">
+        <xsd:sequence>
+            <xsd:element name="NIP" type="tns:TNIPIdWew"/>
+            <xsd:element name="Nazwa" type="tns:TZnakowy"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="TPodmiot2">
+        <xsd:sequence>
+            <xsd:element name="NIP" type="tns:TNIPIdWew"/>
+            <xsd:element name="Nazwa" type="tns:TZnakowy"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="TAdres">
+        <xsd:sequence>
+            <xsd:element name="KodKraju" type="tns:TKodyKrajowUE"/>
+            <xsd:element name="AdresL1" type="tns:TZnakowy"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- Simple Types -->
+    <xsd:simpleType name="TDataT">
+        <xsd:restriction base="xsd:date"/>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="TZnakowy">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="256"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="TNIPIdWew">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[0-9]{10}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="TKwotowy">
+        <xsd:restriction base="xsd:decimal">
+            <xsd:fractionDigits value="2"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="TKodWaluty">
+        <xsd:restriction base="xsd:string">
+            <xsd:length value="3"/>
+            <xsd:pattern value="[A-Z]{3}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="TKodyKrajowUE">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="PL"/>
+            <xsd:enumeration value="DE"/>
+            <xsd:enumeration value="FR"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="TKodFormularza">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="FA"/>
+            <xsd:enumeration value="KOR"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema> 
