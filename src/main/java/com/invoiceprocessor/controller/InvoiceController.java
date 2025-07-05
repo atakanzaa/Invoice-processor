@@ -28,40 +28,11 @@ public class InvoiceController {
         @ApiResponse(responseCode = "400", description = "Invalid request or XML validation failed"),
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<?> processInvoice(@Valid @RequestBody InvoiceRequest request) {
-        try {
-            log.info("Processing invoice request");
-            invoiceService.processInvoice(request.getBase64xml());
-            
-            InvoiceResponse response = new InvoiceResponse("Invoice saved successfully");
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-            
-        } catch (RuntimeException e) {
-            log.error("Error processing invoice: {}", e.getMessage(), e);
-            return ResponseEntity.badRequest()
-                .body(new ErrorResponse("Bad Request", e.getMessage()));
-        } catch (Exception e) {
-            log.error("Unexpected error processing invoice: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("Internal Server Error", "An unexpected error occurred"));
-        }
-    }
-    
-    public static class ErrorResponse {
-        private String error;
-        private String message;
+    public ResponseEntity<InvoiceResponse> processInvoice(@Valid @RequestBody InvoiceRequest request) throws Exception {
+        log.info("Processing invoice request");
+        invoiceService.processInvoice(request.getBase64xml());
         
-        public ErrorResponse(String error, String message) {
-            this.error = error;
-            this.message = message;
-        }
-        
-        public String getError() {
-            return error;
-        }
-        
-        public String getMessage() {
-            return message;
-        }
+        InvoiceResponse response = new InvoiceResponse("Invoice saved successfully");
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 } 
