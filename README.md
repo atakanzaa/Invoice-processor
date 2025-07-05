@@ -39,10 +39,7 @@ cd Invoice-processor
 -- Create database
 CREATE DATABASE invoice_db;
 
--- Create user (optional)
-CREATE USER invoice_user WITH PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE invoice_db TO invoice_user;
-```
+
 
 3. **Configure Database Connection:**
 Update `src/main/resources/application.properties`:
